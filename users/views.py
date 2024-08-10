@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken
 
 User = get_user_model()
 
@@ -36,6 +37,11 @@ class LoginUserView(generics.GenericAPIView):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            return Response('ok')
+            #return Response('Вы успешно вошли в систему.')
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+            })
 
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
