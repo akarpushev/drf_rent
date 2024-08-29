@@ -45,3 +45,7 @@ class LoginUserView(generics.GenericAPIView):
             })
 
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+def home_view(request):
+    return render(request, 'home.html')
